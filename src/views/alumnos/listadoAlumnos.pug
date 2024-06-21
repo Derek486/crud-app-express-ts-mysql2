@@ -1,0 +1,26 @@
+extends ../layouts/base.pug
+
+block content
+  .container
+    .d-flex.justify-content-between.align-items-center.mb-4
+      h1 Listado de Alumnos
+      a.btn.btn-primary(href='/alumnos/create') Añadir Alumno
+    .table-responsive
+      table.table.table-striped
+        thead
+          tr
+            th Nombre
+            th Apellidos
+            th Edad
+            th(style='width: 12rem; text-align: center;') Acciones
+        tbody
+          each alumno in alumnos
+            tr
+              td= alumno.nombres
+              td= alumno.apellidos
+              td= alumno.edad
+              td(style='width: 12rem;')
+                center 
+                  a.btn.btn-primary.btn-sm(href=`/alumnos/${alumno.id}`) Editar
+                  form(action=`/alumnos/delete/${alumno.id}` method='POST' style='display: inline;')
+                    button.btn.btn-danger.btn-sm(type='submit') Eliminar

@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS alumnos_cursos;
+DROP TABLE IF EXISTS alumnos;
+DROP TABLE IF EXISTS cursos;

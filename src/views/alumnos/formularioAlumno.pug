@@ -1,0 +1,61 @@
+extends ../layouts/base.pug
+
+block content
+  .container
+    h1= typeof alumno !== 'undefined' ? 'Editar Alumno' : 'Añadir Nuevo Alumno'
+    form.card.p-4.d-flex.flex-row.gap-4(action=typeof alumno !== 'undefined' ? `/alumnos/update` : '/alumnos/create', method='POST')
+      div.col-md-6 
+        if typeof alumno !== 'undefined'
+          input(type='hidden', name='id', value=alumno.id)
+        .input-group.mb-3
+          label.input-group-text.col-md-3(for='nombres') Nombre(s)
+          input#nombres.form-control(type='text' name='nombres' value=typeof alumno !== 'undefined' ? alumno.nombres : '' required)
+        .input-group.mb-3
+          label.input-group-text.col-md-3(for='apellidos') Apellido(s)
+          input#apellidos.form-control(type='text' name='apellidos' value=typeof alumno !== 'undefined' ? alumno.apellidos : '' required)
+        .input-group.mb-3
+          label.input-group-text.col-md-3(for='edad') Edad
+          input#edad.form-control(type='number' name='edad' value=typeof alumno !== 'undefined' ? alumno.edad : '' min='1' required)
+        if typeof alumno !== 'undefined'
+          .form-group
+          label Cursos inscrito
+          table.table.table-striped
+            thead
+              tr
+                th ID
+                th Curso
+                th Fecha de inscripción
+            tbody
+              each curso in alumno.cursos
+                tr
+                  td= curso.id
+                  td= curso.nombre 
+                  td= curso.fechaInscripcion.toLocaleString()
+
+      div.col-md-6 
+        .form-group
+          label Cursos
+          table.table.table-striped
+            thead
+              tr
+                th Seleccionar
+                th Curso
+            tbody
+              each curso in cursos
+                tr
+                  td
+                    input(type='checkbox' name='cursos[]' value=curso.id checked=(
+                      (cursos, cursoId) => {
+                        if (cursos) {
+                          return cursos.some(curso => curso.id === cursoId);
+                        }
+                        return false;
+                      }
+                    )(typeof alumno !== 'undefined' ? alumno.cursos : [], curso.id))
+                  td= curso.nombre
+
+        button.btn.btn-primary(type='submit')
+          if typeof alumno !== 'undefined'
+            | Actualizar Alumno
+          else
+            | Añadir Alumno

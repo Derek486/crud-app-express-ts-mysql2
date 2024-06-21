@@ -1,0 +1,23 @@
+extends ../layouts/base.pug
+
+block content
+  .container
+    .d-flex.justify-content-between.align-items-center.mb-4
+      h1 Listado de Cursos
+      a.btn.btn-primary(href='/cursos/create') Añadir Curso
+    .table-responsive
+      table.table.table-striped
+        thead
+          tr
+            th Curso
+            th Descripción
+            th(style='width: 12rem; text-align: center;') Acciones
+        tbody
+          each curso in cursos
+            tr
+              td= curso.nombre
+              td= curso.descripcion
+              td(style='width: 12rem; text-align: center;')
+                a.btn.btn-primary.btn-sm(href=`/cursos/${curso.id}`) Editar
+                form(action=`/cursos/delete/${curso.id}` method='POST' style='display: inline;')
+                  button.btn.btn-danger.btn-sm(type='submit') Eliminar

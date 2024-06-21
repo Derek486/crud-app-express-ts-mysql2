@@ -1,0 +1,38 @@
+extends ../layouts/base.pug
+
+block content
+  .container.d-flex.flex-column
+    h1.mx-auto= typeof curso !== 'undefined' ? 'Editar Curso' : 'Añadir Nuevo Curso'
+    form.card.p-4.d-flex.flex-row.gap-4.mx-auto(action=typeof curso !== 'undefined' ? `/cursos/update` : '/cursos/create', method='POST')
+      if typeof curso !== 'undefined'
+        div
+          label Alumnos inscritos
+          table.table.table-striped
+            thead
+              tr
+                th ID
+                th Nombres
+                th Apellidos
+                th Fecha de inscripción
+            tbody
+              each alumno in curso.alumnos
+                tr
+                  td= alumno.id
+                  td= alumno.nombres 
+                  td= alumno.apellidos 
+                  td= alumno.fechaInscripcion.toLocaleString()
+      div.d-flex.flex-column.gap-3 
+        if typeof curso !== 'undefined'
+          input(type='hidden', name='id', value=curso.id)
+        .input-group
+          label.input-group-text.col-md-5(for='nombre') Nombre
+          input#nombre.form-control(type='text' name='nombre' value=typeof curso !== 'undefined' ? curso.nombre : '' required)
+        .input-group
+          label.input-group-text.col-md-5(for='descripcion') Descripción
+          textarea#descripcion.form-control(type='text' name='descripcion')=typeof curso !== 'undefined' ? curso.descripcion : ''
+        
+        button.btn.btn-primary.ms-auto(type='submit')
+          if typeof curso !== 'undefined'
+            | Actualizar Curso
+          else
+            | Añadir Curso
